@@ -44,7 +44,7 @@ public class BookHunt extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        if (eventManager != null && eventManager.isRunning()) {
+        if (eventManager != null && (eventManager.isRunning() || eventManager.isWarningPhase())) {
             eventManager.forceEnd("Плагин выключен");
         }
         if (autoStartManager != null) {
