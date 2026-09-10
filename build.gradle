@@ -12,17 +12,26 @@ repositories {
         url = 'https://repo.papermc.io/repository/maven-public/'
     }
     maven {
+        name = 'codemc'
+        url = 'https://repo.codemc.io/repository/maven-public/'
+    }
+    maven {
         name = 'jitpack'
         url = 'https://jitpack.io'
     }
 }
 
 dependencies {
+    // Если TLS/сеть ломается — положи jar в libs/ (см. README ниже)
+    def libsDir = file('libs')
+    if (libsDir.exists()) {
+        compileOnly fileTree(dir: 'libs', include: ['*.jar'])
+    }
+
     compileOnly 'io.papermc.paper:paper-api:26.1.2.build.74-stable'
     compileOnly 'com.github.MilkBowl:VaultAPI:1.7.1'
 }
 
-// Paper 26 требует Java 25
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(25)
