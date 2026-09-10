@@ -189,6 +189,11 @@ public class EventManager {
             hunter.teleport(arena);
         }
 
+        // после назначения всех целей — сообщить каждому роли
+        for (Player p : players) {
+            sendRoles(p);
+        }
+
         Msg.broadcast(plugin, "started");
         Sounds.started();
 
@@ -513,6 +518,15 @@ public class EventManager {
         Msg.broadcast(plugin, "eliminated", Map.of("player", victim.getName()));
         Sounds.eliminated();
 
+        sendRoles(killer);
+        // у кого могла смениться цель после handleQuit-подобных передач — обновим всех живых
+        for (UUID id : participants) {
+            Player p = Bukkit.getPlayer(id);
+            if (p != null && !p.equals(killer)) {
+                sendRoles(p);
+            }
+        }
+
         checkWin(killerId);
     }
 
@@ -524,6 +538,34 @@ public class EventManager {
             beginEnding("Победитель: " + Optional.ofNullable(Bukkit.getOfflinePlayer(winner).getName()).orElse("?"),
                     winner);
         }
+    }
+
+
+    /**
+     * Личное сообщение: кого бить и кто охотится на тебя.
+     */
+    public void sendRoles(Player player) {
+        if (player == null || !player.isOnline()) return;
+
+        UUID id = player.getUniqueId();
+        UUID targetId = hunterToTarget.get(id);
+
+        String targetName = "&7—";
+        if (targetId != null) {
+            targetName = "&c" + Optional.ofNullable(Bukkit.getOfflinePlayer(targetId).getName()).orElse("?");
+        }
+
+        String hunterName = "&7—";
+        for (Map.Entry<UUID, UUID> e : hunterToTarget.entrySet()) {
+            if (e.getValue().equals(id)) {
+                hunterName = "&c" + Optional.ofNullable(Bukkit.getOfflinePlayer(e.getKey()).getName()).orElse("?");
+                break;
+            }
+        }
+
+        String prefix = plugin.getConfig().getString("prefix", "&6[BookHunt] &r");
+        player.sendMessage(Msg.color(prefix + "&eТвоя цель: " + targetName));
+        player.sendMessage(Msg.color(prefix + "&eНа тебя охотится: " + hunterName));
     }
 
     public void giveBook(Player player, UUID targetUuid, int killCount) {
@@ -638,6 +680,14 @@ public class EventManager {
 
         Msg.broadcast(plugin, "eliminated", Map.of("player", player.getName()));
         Sounds.eliminated();
+
+        for (UUID pid : participants) {
+            Player p = Bukkit.getPlayer(pid);
+            if (p != null) {
+                sendRoles(p);
+            }
+        }
+
         checkWin(id);
     }
 
