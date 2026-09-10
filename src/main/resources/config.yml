@@ -1,0 +1,53 @@
+
+min-players: 3
+
+# Сколько минут игроки должны быть онлайн подряд для автозапуска
+online-duration-minutes: 20
+
+# Предупреждение перед стартом (секунды)
+warning-seconds: 60
+
+# Длительность ивента (минуты)
+event-duration-minutes: 10
+
+# Награда за каждое убийство (выдаётся только в конце ивента)
+reward-per-kill: 50.0
+
+# Сообщения
+prefix: "&6[BookHunt] &r"
+
+messages:
+  not-enough-players: "&cНедостаточно игроков (минимум {min})."
+  already-running: "&cИвент уже идёт!"
+  not-running: "&cИвент сейчас не активен."
+  warning: "&eЧерез {seconds} сек. начнётся BookHunt! Готовьтесь!"
+  started: "&aBookHunt начался! У тебя книга с целью. Бей только её!"
+  ended-time: "&cИвент окончен по времени!"
+  ended-winner: "&aИвент окончен! Победитель: &e{player}"
+  no-spawn: "&cТочка арены не установлена! /bookhunt setspawn"
+  spawn-set: "&aТочка арены установлена."
+  only-target: "&cТы можешь бить только свою цель!"
+  kill: "&aТы убил &e{victim}&a! Новая цель: &c{target}"
+  totem-disabled: "&cТотемы во время ивента отключены!"
+  auto-start: "&eАвтозапуск BookHunt через ~{minutes} мин (игроков: {count})"
+  eliminated: "&c{player} выбыл из ивента!"
+  logout-death: "&c{player} вышел во время ивента и умер!"
+  reward: "&aТы получил &e{amount} &aза {kills} убийств(а)!"
+  no-reward: "&7У тебя 0 убийств — награда не выдана."
+
+# Книга
+book-name: "&d&lЗаказ: &c{target}"
+book-lore:
+  - "&7Цель: &c{target}"
+  - "&7Убийств: &e{kills}"
+  - ""
+  - "&8Бей только эту цель"
+
+# Арена (ставится через /bookhunt setspawn)
+arena:
+  world: world
+  x: 0.5
+  y: 64.0
+  z: 0.5
+  yaw: 0.0
+  pitch: 0.0

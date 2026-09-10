@@ -1,0 +1,24 @@
+name: BookHunt
+version: ${version}
+main: me.getsouf.bookhunt.BookHunt
+api-version: '26.1'
+author: getsouf
+description: PvP event with target books
+
+depend:
+  - Vault
+
+commands:
+  bookhunt:
+    description: Main BookHunt command
+    usage: /bookhunt <start|stop|setspawn|status|reload>
+    permission: bookhunt.admin
+    aliases: [bh]
+
+permissions:
+  bookhunt.admin:
+    description: Admin commands for BookHunt
+    default: op
+  bookhunt.play:
+    description: Participate in BookHunt
+    default: true
